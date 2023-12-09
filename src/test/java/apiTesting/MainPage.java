@@ -1,35 +1,36 @@
-import com.codeborne.selenide.ElementsCollection;
+package apiTesting;
+
+import com.codeborne.selenide.ClickOptions;
 import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.SelenideElement;
-import org.junit.Test;
 
-import static com.codeborne.selenide.Selenide.*;
+import java.time.Duration;
+
+import static com.codeborne.selenide.Selenide.$x;
+
 
 public class MainPage {
 
-
     public static String URL_MAIN_PAGE = "https://yandex.ru/pogoda";
     public static SelenideElement sendCity = $x("//input");
-    public static ElementsCollection choiceCity = $$x(".//input[contains(@aria-controls, 'suggest-list')]");
-    public static SelenideElement tenDays = $x(".//a[contains(text(),'Подробный прогноз на 10 дней')]");
+    public static SelenideElement choiceCity = $x("//*[@class='place-list__item']/a[1]");
+    public static SelenideElement tenDays = $x(".//div/a[1][contains(text(),'Подробный прогноз на 10 дней')]");
 
 
     public void openWeatherPage() {
-
         Selenide.open(URL_MAIN_PAGE);
-
     }
 
-    public void sendCityName() {
-        sendCity.sendKeys("Ижевск");
+    public void sendCityName(String cityName) {
+        sendCity.sendKeys(cityName);
+        sendCity.pressEnter();
     }
 
     public void choiceCityName() {
-        choiceCity.first().click();
-
+        choiceCity.click();
     }
 
-    public void clickTenDays() {
-        tenDays.click();
+    public void clickTenDaysWeather() {
+        tenDays.click(ClickOptions.withTimeout(Duration.ofSeconds(60)));
     }
 }
